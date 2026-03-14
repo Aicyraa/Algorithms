@@ -1,7 +1,7 @@
 const {loopF, recurF} = require('../src/fibonacci')
 
-test.skip('Using loop for fibonacci', () => {
-   expect(loopF(8)).toEqual([0, 1, 1, 2, 3, 5, 8, 13])
+test('Using loop for fibonacci', () => {
+   expect(loopF(7)).toEqual([0, 1, 1, 2, 3, 5, 8, 13])
 })
 
 
