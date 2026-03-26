@@ -1,4 +1,4 @@
-const mergesort = require('../src/mergesort')
+const mergesort = require('./main')
 
 describe('Merge Algoritm Test Cases', () => {
    test('Simpliest Input', () => {
