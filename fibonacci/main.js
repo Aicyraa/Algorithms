@@ -11,11 +11,10 @@ function loopFibonacci(num) {
 }
 
 function recursiveFibonacci(n) {
-
    let result = [0, 1]
-   if ((n - 1) === 0) {
+   if (n - 1 === 0) {
       return result.slice(0, 1)
-   } else if ((n - 1) === 1) {
+   } else if (n - 1 === 1) {
       return result
    } else {
       result = recursiveFibonacci(n - 1).concat(0)
@@ -23,7 +22,6 @@ function recursiveFibonacci(n) {
          return i !== result.length - 1 ? v : result[i - 2] + result[i - 1]
       })
    }
-
 }
 
 // recursiveFibonacci(1)

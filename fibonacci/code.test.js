@@ -1,9 +1,8 @@
-const {loopF, recurF} = require('./main.js')
+const { loopF, recurF } = require('./main.js')
 
 test('Using loop for fibonacci', () => {
    expect(loopF(7)).toEqual([0, 1, 1, 2, 3, 5, 8, 13])
 })
-
 
 describe('Recursive function test', () => {
    test('Simple Input: 1', () => {
