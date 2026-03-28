@@ -40,12 +40,6 @@ class Tree {
       return root
    }
 
-   /**
-    * Search helper function
-    * @param {function} callback - A function that is invoke when searching
-    * @param {Node} root - The root (level 0) of the BST model
-    * */
-
    includes(value, root = this.#root) {
       if (root === null) {
          return null
@@ -63,18 +57,14 @@ class Tree {
       } else {
          return false
       }
-
    }
 
    insert(value, root = this.#root) {
-      
       if (this.#root === null) {
          this.#root = new Node(value)
-      }
-      
-      if (root.data === value) {
+      } else if (root.data === value) {
          return
-      } 
+      }
 
       if (root.data > value) {
          root.left === null
@@ -87,16 +77,40 @@ class Tree {
       }
    }
 
-   deleteItem() {}
+   deleteItem(value, root = this.#root, parent, left = true) {
+      // If target node has a child put it in a temporary var and
+      // connect it to the parent node after deleting
 
-   set root(arr) {
-      const sorted = new Set(this.#sort(arr))
-      const root = this.#buildTree([...sorted])
-      this.#root = root
-   }
+      if (root === null) {
+         return
+      }
 
-   get root() {
-      return this.#root
+      root.left?.data < value
+         ? this.deleteItem(value, root.right, root, false)
+         : this.deleteItem(value, root.left, root)
+
+      const delNode = () => (left ? (parent.left = null) : (parent.right = null))
+      let temp = undefined
+
+      if (root.data === value) {
+         if (!root.left && !root.right) {
+            delNode()
+            return
+         }
+
+         if (root.left && root.right) {
+            temp = { L: root.left, R: root.right }
+            delNode()
+            return
+         }
+
+         if (root.left || root.right) {
+            temp = root.left || root.right
+            delNode()
+            left ? (parent.left = temp) : (parent.right = temp)
+            return
+         }
+      }
    }
 
    // Prints the BST model
@@ -105,13 +119,15 @@ class Tree {
          return
       }
 
-      this.prettyPrint(
-         node.right,
-         `${prefix}${isLeft ? '│   ' : '    '}`,
-         false,
-      )
+      this.prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false)
       console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`)
       this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true)
+   }
+
+   set root(arr) {
+      const sorted = new Set(this.#sort(arr))
+      const root = this.#buildTree([...sorted])
+      this.#root = root
    }
 }
 

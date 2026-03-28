@@ -22,6 +22,10 @@ class Node {
       return this.#right
    }
 
+   set data(value) {
+      this.#right = value
+   }
+
    get data() {
       return this.#data
    }
