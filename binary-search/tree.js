@@ -42,15 +42,38 @@ class Tree {
       return root
    }
 
+   includes() {
+
+   }
+
+   insert() {
+      
+   }
+
+   deleteItem() {
+
+   }
+
+
+
    set root(arr) {
       const sorted = new Set(this.#sort(arr))
       const root = this.#buildTree([...sorted])
       this.#root = root
    }
 
-   get root() {
-      return this.#root
-   }
+   // Prints the BST model
+   prettyPrint(node = this.#root, prefix = '', isLeft = true) {
+      if (node === null || node === undefined) {
+        return;
+      }
+    
+      this.prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+      console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+      this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
+
+  
 }
 
 module.exports = Tree
