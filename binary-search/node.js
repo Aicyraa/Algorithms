@@ -3,7 +3,7 @@ class Node {
    #left
    #right
 
-   constructor (mid) {
+   constructor(mid) {
       this.#data = mid
    }
 
@@ -25,7 +25,6 @@ class Node {
    get data() {
       return this.#data
    }
-   
 }
 
 module.exports = Node

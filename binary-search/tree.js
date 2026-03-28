@@ -13,8 +13,8 @@ class Tree {
       const right = this.#sort(arr.slice(mid))
 
       let l = 0,
-          r = 0,
-          result = []
+         r = 0,
+         result = []
 
       while (l < left.length && r < right.length) {
          if (left[l] <= right[r]) {
@@ -23,14 +23,12 @@ class Tree {
             result.push(right[r++])
          }
       }
-      
+
       return [...result, ...left.slice(l), ...right.slice(r)]
-      
    }
 
    #buildTree(arr) {
-
-      if (arr.length === 0 ) {
+      if (arr.length === 0) {
          return null
       }
 
@@ -42,19 +40,47 @@ class Tree {
       return root
    }
 
-   includes() {
+   /**
+    * Search helper function
+    * @param {function} callback - A function that is invoke when searching
+    * @param {Node} root - The root (level 0) of the BST model
+    * */
+   #traverse(callback, root = this.#root) {
+      if (root === null) {
+         return null
+      }
 
-   }
+      const result = callback(root)
 
-   insert() {
+      if (result) {
+         return result
+      }
       
+      const left = this.#traverse(callback, root.left)
+      const right = this.#traverse(callback, root.right)
+
+      if (left ?? right) {
+         return left ?? right
+      } else {
+         return null
+      }
    }
 
-   deleteItem() {
-
+   includes(value) {
+      return (
+         this.#traverse((root) => {
+            if (root.data === value) {
+               return true
+            } 
+         }) ?? false
+      )
    }
 
+   insert(value) {
+      return this.#traverse(() => {})
+   }
 
+   deleteItem() {}
 
    set root(arr) {
       const sorted = new Set(this.#sort(arr))
@@ -62,18 +88,24 @@ class Tree {
       this.#root = root
    }
 
+   get root() {
+      return this.#root
+   }
+
    // Prints the BST model
    prettyPrint(node = this.#root, prefix = '', isLeft = true) {
       if (node === null || node === undefined) {
-        return;
+         return
       }
-    
-      this.prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-      console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-      this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-    }
 
-  
+      this.prettyPrint(
+         node.right,
+         `${prefix}${isLeft ? '│   ' : '    '}`,
+         false,
+      )
+      console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`)
+      this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true)
+   }
 }
 
 module.exports = Tree
