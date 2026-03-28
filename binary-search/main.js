@@ -1,6 +1,11 @@
 const Tree = require('./tree.js')
 
 const BST = new Tree()
-BST.root = [3, 2, 1, 6, 5, 4, 10, 9, 8, 7]
+BST.root = [2, 4, 6]
+BST.insert(10)
+BST.insert(1)
+BST.insert(3)
+BST.insert(12)
+BST.insert(5)
+BST.insert(20)
 BST.prettyPrint()
-console.log(BST.includes(11))

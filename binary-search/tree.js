@@ -45,39 +45,46 @@ class Tree {
     * @param {function} callback - A function that is invoke when searching
     * @param {Node} root - The root (level 0) of the BST model
     * */
-   #traverse(callback, root = this.#root) {
+
+   includes(value, root = this.#root) {
       if (root === null) {
          return null
       }
 
-      const result = callback(root)
+      if (root.data === value) {
+         return true
+      }
 
-      if (result) {
-         return result
+      const left = this.includes(value, root.left)
+      const right = this.includes(value, root.right)
+
+      if (left || right) {
+         return true
+      } else {
+         return false
+      }
+
+   }
+
+   insert(value, root = this.#root) {
+      
+      if (this.#root === null) {
+         this.#root = new Node(value)
       }
       
-      const left = this.#traverse(callback, root.left)
-      const right = this.#traverse(callback, root.right)
+      if (root.data === value) {
+         return
+      } 
 
-      if (left ?? right) {
-         return left ?? right
+      if (root.data > value) {
+         root.left === null
+            ? (root.left = new Node(value))
+            : this.insert(value, root.left)
       } else {
-         return null
+         root.right === null
+            ? (root.right = new Node(value))
+            : this.insert(value, root.right)
       }
-   }
-
-   includes(value) {
-      return (
-         this.#traverse((root) => {
-            if (root.data === value) {
-               return true
-            } 
-         }) ?? false
-      )
-   }
-
-   insert(value) {
-      return this.#traverse(() => {})
    }
 
    deleteItem() {}

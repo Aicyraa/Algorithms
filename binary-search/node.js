@@ -1,7 +1,7 @@
 class Node {
    #data
-   #left
-   #right
+   #left = null
+   #right = null
 
    constructor(mid) {
       this.#data = mid
