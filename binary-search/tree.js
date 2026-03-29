@@ -42,10 +42,10 @@ class Tree {
 
    #findSuccessor(node) {
       let successorParent = node
-      let successor = node.right 
+      let successor = node.right
       while (successor.left !== null) {
          successorParent = successor
-         successor = successor.left 
+         successor = successor.left
       }
       return { successorParent, successor }
    }
@@ -59,64 +59,64 @@ class Tree {
          return true
       }
 
-      return value < node.data 
+      return value < node.data
          ? this.includes(value, node.left)
-         : this.includes(value, node.right) 
-         ?? false
-      
+         : (this.includes(value, node.right) ?? false)
    }
 
-   insert(value, root = this.#root) {
-      if (this.#root === null) {
+   insert(value, node = this.#root) {
+      if (node === null) {
          this.#root = new Node(value)
-      } else if (root.data === value) {
+      } else if (value === node.data) {
          return
       }
 
-      if (root.data > value) {
-         root.left === null
-            ? (root.left = new Node(value))
+      if (node.data > value) {
+         node.left === null
+            ? (node.left = new Node(value))
             : this.insert(value, root.left)
       } else {
-         root.right === null
-            ? (root.right = new Node(value))
-            : this.insert(value, root.right)
+         node.right === null
+            ? (node.right = new Node(value))
+            : this.insert(value, node.right)
       }
    }
 
    deleteItem(value, parentNode = null, node = this.#root, isLeft = true) {
       if (node === null) {
-         return node
+         return 
       }
 
       if (value < node.data) {
          this.deleteItem(value, node, node.left, true)
+         return
       } else if (value > node.data) {
          this.deleteItem(value, node, node.right, false)
+         return
+      }
+
+      if (!node.left && !node.right) {
+         parentNode === null
+            ? (this.#root = null)
+            : isLeft
+              ? (parentNode.left = null)
+              : (parentNode.right = null)
+      } else if (node.left && node.right) {
+         const { successorParent, successor } = this.#findSuccessor(node)
+         node.data = successor.data
+         this.deleteItem(
+            successor.data,
+            successorParent,
+            successor,
+            successorParent.left === successor, // ← correct: is successor a left child?
+         )
       } else {
-         if (!node.left && !node.right) {
-            parentNode === null
-               ? (this.#root = null)
-               : isLeft
-                 ? (parentNode.left = null)
-                 : (parentNode.right = null)
-         } else if (node.left && node.right) {
-            const { successorParent, successor } = this.#findSuccessor(node)
-            node.data = successor.data
-            this.deleteItem(
-              successor.data,
-              successorParent,
-              successor,
-              successorParent.left === successor, // ← correct: is successor a left child?
-            )
-          } else {
-            const child = node.left ?? node.right
-            parentNode === null
-               ? (this.#root = child)
-               : isLeft
-                 ? (parentNode.left = child)
-                 : (parentNode.right = child)
-         }
+         const child = node.left ?? node.right
+         parentNode === null
+            ? (this.#root = child)
+            : isLeft
+              ? (parentNode.left = child)
+              : (parentNode.right = child)
       }
    }
 
