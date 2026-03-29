@@ -23,7 +23,7 @@ class Node {
    }
 
    set data(value) {
-      this.#right = value
+      this.#data = value
    }
 
    get data() {

@@ -40,9 +40,19 @@ class Tree {
       return root
    }
 
+   #findSuccessor(node) {
+      let successorParent = node
+      let successor = node.right // ← go RIGHT first
+      while (successor.left !== null) {
+         successorParent = successor
+         successor = successor.left // ← then go left
+      }
+      return { successorParent, successor }
+   }
+
    includes(value, root = this.#root) {
       if (root === null) {
-         return null
+         return
       }
 
       if (root.data === value) {
@@ -77,46 +87,46 @@ class Tree {
       }
    }
 
-   deleteItem(value, root = this.#root, parent, left = true) {
-      // If target node has a child put it in a temporary var and
-      // connect it to the parent node after deleting
-
-      if (root === null) {
-         return
+   deleteItem(value, parentNode = null, node = this.#root, isLeft = true) {
+      if (node === null) {
+         return node
       }
 
-      root.left?.data < value
-         ? this.deleteItem(value, root.right, root, false)
-         : this.deleteItem(value, root.left, root)
-
-      const delNode = () => (left ? (parent.left = null) : (parent.right = null))
-      let temp = undefined
-
-      if (root.data === value) {
-         if (!root.left && !root.right) {
-            delNode()
-            return
-         }
-
-         if (root.left && root.right) {
-            temp = { L: root.left, R: root.right }
-            delNode()
-            return
-         }
-
-         if (root.left || root.right) {
-            temp = root.left || root.right
-            delNode()
-            left ? (parent.left = temp) : (parent.right = temp)
-            return
+      if (value < node.data) {
+         this.deleteItem(value, node, node.left, true)
+      } else if (value > node.data) {
+         this.deleteItem(value, node, node.right, false)
+      } else {
+         if (!node.left && !node.right) {
+            parentNode === null
+               ? (this.#root = null)
+               : isLeft
+                 ? (parentNode.left = null)
+                 : (parentNode.right = null)
+         } else if (node.left && node.right) {
+            const { successorParent, successor } = this.#findSuccessor(node)
+            node.data = successor.data
+            this.deleteItem(
+              successor.data,
+              successorParent,
+              successor,
+              successorParent.left === successor, // ← correct: is successor a left child?
+            )
+          } else {
+            const child = node.left ?? node.right
+            parentNode === null
+               ? (this.#root = child)
+               : isLeft
+                 ? (parentNode.left = child)
+                 : (parentNode.right = child)
          }
       }
    }
 
    // Prints the BST model
    prettyPrint(node = this.#root, prefix = '', isLeft = true) {
-      if (node === null || node === undefined) {
-         return
+      if (node === null) {
+         return node
       }
 
       this.prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false)
