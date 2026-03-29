@@ -42,31 +42,28 @@ class Tree {
 
    #findSuccessor(node) {
       let successorParent = node
-      let successor = node.right // ← go RIGHT first
+      let successor = node.right 
       while (successor.left !== null) {
          successorParent = successor
-         successor = successor.left // ← then go left
+         successor = successor.left 
       }
       return { successorParent, successor }
    }
 
-   includes(value, root = this.#root) {
-      if (root === null) {
+   includes(value, node = this.#root) {
+      if (node === null) {
          return
       }
 
-      if (root.data === value) {
+      if (value === node.data) {
          return true
       }
 
-      const left = this.includes(value, root.left)
-      const right = this.includes(value, root.right)
-
-      if (left || right) {
-         return true
-      } else {
-         return false
-      }
+      return value < node.data 
+         ? this.includes(value, node.left)
+         : this.includes(value, node.right) 
+         ?? false
+      
    }
 
    insert(value, root = this.#root) {
