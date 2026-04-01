@@ -160,7 +160,7 @@ class Tree {
    }
 
    /**
-    * invokes calback per level (Uses breadth first level)
+    * invokes callback per level (Uses breadth first level)
     * @param {function} [callback=null] - The function that will be called per each value
     * @param {Node|null} [node=this.#root] - The current node that will be searched
     */
@@ -185,57 +185,109 @@ class Tree {
    }
 
    /**
-    * invokes calback per data (DLR)
+    * invokes callback per data (DLR)
     * @param {function} [callback=null] - The function that will be called per each value
     * @param {Node|null} [node=this.#root] - The current node that will be searched
     */
-   preOrderForEach(calback, node = this.#root) {
+   preOrderForEach(callback, node = this.#root) {
       if (node === null) {
-         return 
+         return
       }
 
-      calback(node.data)
+      callback(node.data)
 
       if (node.left) {
-         this.preOrderForEach(calback, node.left)
+         this.preOrderForEach(callback, node.left)
       }
 
       if (node.right) {
-         this.preOrderForEach(calback, node.right)
+         this.preOrderForEach(callback, node.right)
       }
    }
 
-   inOrderForEach(calback, node = this.#root) {
+   /**
+    * invokes callback per data (LDR)
+    * @param {function} [callback=null] - The function that will be called per each value
+    * @param {Node|null} [node=this.#root] - The current node that will be searched
+    */
+   inOrderForEach(callback, node = this.#root) {
       if (node === null) {
-         return 
+         return
       }
 
       if (node.left) {
-         this.inOrderForEach(calback, node.left)
+         this.inOrderForEach(callback, node.left)
       }
 
-      calback(node.data)
+      callback(node.data)
 
       if (node.right) {
-         this.inOrderForEach(calback, node.right)
+         this.inOrderForEach(callback, node.right)
       }
    }
 
-   postOrderForEach(calback, node = this.#root) {
+   /**
+    * invokes callback per data (LRD)
+    * @param {function} [callback=null] - The function that will be called per each value
+    * @param {Node|null} [node=this.#root] - The current node that will be searched
+    */
+   postOrderForEach(callback, node = this.#root) {
       if (node === null) {
-         return 
+         return
       }
+
+      if (node.left) {
+         this.postOrderForEach(callback, node.left)
+      }
+
+      if (node.right) {
+         this.postOrderForEach(callback, node.right)
+      }
+
+      callback(node.data)
+   }
+
+   /**
+    * Returns the height from the node to the longest leaf path
+    * @param {any} value - The value that the function need to identify the height
+    * @param {Node|null} [node=this.#root] - The current node 
+    * @param {number} [height=0] - The height of the node
+    */
+   height(value, node = this.#root, height = 0) {
+
+      if (node === null) {
+         return
+      }
+
+      if (node.data === value) {
+         let left = 0; 
+         let right = 0; 
+         
+         if (node.left)  {
+            // Change the value to the left node value so we can still enter this code block
+            left = this.height(node.left.data, node.left, ++height) 
+         }
+
+         if (node.right) {
+            // Change the value to the right node value so we can still enter this code block
+            right = this.height(node.right.data, node.right, ++height)
+         }
+
+         return Math.max(left, right) || height
+      } 
       
-      if (node.left) {
-         this.postOrderForEach(calback, node.left)
-      }
-      
-      if (node.right) {
-         this.postOrderForEach(calback, node.right)
-      }
-
-      calback(node.data)
+      node.data < value
+            ? this.height(value, node.right)
+            : this.height(value, node.left)
    }
+
+   depth(value) {
+
+   }
+
+   isBalance() {}
+
+   rebalance() {}
 
    /**
     * Prints the BST in a visual tree format.
@@ -260,7 +312,6 @@ class Tree {
    set root(arr) {
       const sorted = new Set(this.#sort(arr))
       const root = this.#buildTree([...sorted])
-
       this.#root = root
    }
 }
