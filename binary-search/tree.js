@@ -106,7 +106,7 @@ class Tree {
       if (node.data > value) {
          node.left === null
             ? (node.left = new Node(value))
-            : this.insert(value, root.left)
+            : this.insert(value, node.left)
       } else {
          node.right === null
             ? (node.right = new Node(value))
@@ -160,6 +160,31 @@ class Tree {
    }
 
    /**
+    * Calls calback per level (Uses breadth first level)
+    * @param {function} [callback=null] - The function that will be called per each value
+    * @param {Node|null} [node=this.#root] - The current node that will be searched
+    */
+   levelForEach(callback, node = this.#root) {
+      if (!callback) {
+         throw new Error('Callback is undefined!')
+      }
+
+      if (node === null) {
+         return
+      }
+
+      const queue = [this.#root] 
+
+      while (queue.length > 0) {
+         const node = queue.shift() 
+         callback(node.data) 
+
+         if (node.left) queue.push(node.left) 
+         if (node.right) queue.push(node.right) 
+      }
+   }
+
+   /**
     * Prints the BST in a visual tree format.
     * @param {Node|null} [node=this.#root] - The current node to print.
     * @param {string} [prefix=''] - The prefix string for indentation.
@@ -182,6 +207,7 @@ class Tree {
    set root(arr) {
       const sorted = new Set(this.#sort(arr))
       const root = this.#buildTree([...sorted])
+
       this.#root = root
    }
 }
