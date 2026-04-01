@@ -250,22 +250,21 @@ class Tree {
    /**
     * Returns the height from the node to the longest leaf path
     * @param {any} value - The value that the function need to identify the height
-    * @param {Node|null} [node=this.#root] - The current node 
+    * @param {Node|null} [node=this.#root] - The current node
     * @param {number} [height=0] - The height of the node
     */
    height(value, node = this.#root, height = 0) {
-
       if (node === null) {
          return
       }
 
       if (node.data === value) {
-         let left = 0; 
-         let right = 0; 
-         
-         if (node.left)  {
+         let left = 0
+         let right = 0
+
+         if (node.left) {
             // Change the value to the left node value so we can still enter this code block
-            left = this.height(node.left.data, node.left, ++height) 
+            left = this.height(node.left.data, node.left, ++height)
          }
 
          if (node.right) {
@@ -274,15 +273,25 @@ class Tree {
          }
 
          return Math.max(left, right) || height
-      } 
-      
-      node.data < value
-            ? this.height(value, node.right)
-            : this.height(value, node.left)
+      }
+
+      node.data < value 
+         ? this.height(value, node.right)
+         : this.height(value, node.left)
    }
 
-   depth(value) {
+   depth(value, node = this.#root, depth = 0) {
+      if (node === null) {
+         return
+      }
 
+      if (node.data === value) {
+         return depth
+      }
+
+      return node.data < value
+         ? this.depth(value, node.right, ++depth)
+         : this.depth(value, node.left, ++depth)
    }
 
    isBalance() {}
