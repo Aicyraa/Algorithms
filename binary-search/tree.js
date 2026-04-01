@@ -160,7 +160,7 @@ class Tree {
    }
 
    /**
-    * Calls calback per level (Uses breadth first level)
+    * invokes calback per level (Uses breadth first level)
     * @param {function} [callback=null] - The function that will be called per each value
     * @param {Node|null} [node=this.#root] - The current node that will be searched
     */
@@ -173,15 +173,68 @@ class Tree {
          return
       }
 
-      const queue = [this.#root] 
+      const queue = [this.#root]
 
       while (queue.length > 0) {
-         const node = queue.shift() 
-         callback(node.data) 
+         const node = queue.shift()
+         callback(node.data)
 
-         if (node.left) queue.push(node.left) 
-         if (node.right) queue.push(node.right) 
+         if (node.left) queue.push(node.left)
+         if (node.right) queue.push(node.right)
       }
+   }
+
+   /**
+    * invokes calback per data (DLR)
+    * @param {function} [callback=null] - The function that will be called per each value
+    * @param {Node|null} [node=this.#root] - The current node that will be searched
+    */
+   preOrderForEach(calback, node = this.#root) {
+      if (node === null) {
+         return 
+      }
+
+      calback(node.data)
+
+      if (node.left) {
+         this.preOrderForEach(calback, node.left)
+      }
+
+      if (node.right) {
+         this.preOrderForEach(calback, node.right)
+      }
+   }
+
+   inOrderForEach(calback, node = this.#root) {
+      if (node === null) {
+         return 
+      }
+
+      if (node.left) {
+         this.inOrderForEach(calback, node.left)
+      }
+
+      calback(node.data)
+
+      if (node.right) {
+         this.inOrderForEach(calback, node.right)
+      }
+   }
+
+   postOrderForEach(calback, node = this.#root) {
+      if (node === null) {
+         return 
+      }
+      
+      if (node.left) {
+         this.postOrderForEach(calback, node.left)
+      }
+      
+      if (node.right) {
+         this.postOrderForEach(calback, node.right)
+      }
+
+      calback(node.data)
    }
 
    /**
