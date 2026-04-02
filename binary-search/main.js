@@ -1,10 +1,9 @@
 const Tree = require('./tree.js')
 
 const BST = new Tree()
-BST.root = [1, 2, 5, 6,]
-BST.insert(8)
-BST.insert(9)
-BST.insert(9)
-console.log(BST.height(6))
-BST.depth(8)
+BST.root = [1, 2, 3, 4]
+BST.insert(4)
+BST.insert(5)
+console.log(BST.height(3))
+console.log(BST.depth(1))
 BST.prettyPrint()

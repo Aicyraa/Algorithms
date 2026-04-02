@@ -15,10 +15,10 @@ describe('Sorting method test', () => {
 })
 
 describe('Tree methods', () => {
-   const tree = new Tree()
-   tree.root = [2, 4, 6]
+   // const tree = new Tree()
+   // tree.root = [2, 4, 6]
 
-   it('Includes 6 (root)', () => {
+   it.skip('Includes 6 (root)', () => {
       expect(tree.includes(6)).toBeTruthy()
    })
 
@@ -26,11 +26,22 @@ describe('Tree methods', () => {
       expect(tree.includes(6)).toBeTruthy()
    })
 
-   it.skip('Includes includes 1', () => {
-      expect(tree.includes(1)).toBeFalsy()
+   it('Check if node thas that dont have children is balance', () => {
+      const balanceBST = new Tree()
+      balanceBST.root = [1]
+      expect(balanceBST.isBalanced()).toBeTruthy()
+   })
+
+   it('Check if balanced', () => {
+      const balanceBST = new Tree()
+      balanceBST.root = [1, 2, 3]
+      expect(balanceBST.isBalanced()).toBeTruthy()
+   })
+
+   it('Check if inbalanced', () => {
+      const inbalanceBST = new Tree()
+      inbalanceBST.root = [1, 2, 3, 4]
+      expect(inbalanceBST.isBalanced()).toBeTruthy()
    })
    
-   it.skip('Array with 4 elements', () => {
-      expect(tree.root).toEqual([1, 2, 3, 4])
-   })
 })

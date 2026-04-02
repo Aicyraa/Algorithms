@@ -73,11 +73,11 @@ class Tree {
 
    /**
     * Counts the height from node to leaf node
-    * @param {Node} node - The target node 
+    * @param {Node} node - The target node
     * @returns {number} The height of the node
-    *  */ 
+    *  */
    #countHeight(node) {
-      if (node === null ) {
+      if (node === null) {
          return -1
       }
 
@@ -85,6 +85,28 @@ class Tree {
       const right = this.#countHeight(node.right)
 
       return 1 + Math.max(left, right)
+   }
+
+   /**
+    * Recursively checks balance and returns height in one pass.
+    * Returns -1 if any subtree is unbalanced (sentinel), otherwise
+    * returns the true height of the subtree rooted at node.
+    * @private
+    * @param {Node|null} node - The current node
+    * @returns {number} Height of subtree, or -1 if unbalanced
+    */
+   #checkBalance(node) {
+      if (node === null) return 0
+
+      const left = this.#checkBalance(node.left)
+      if (left === -1) return -1 // propagate unbalanced signal up
+
+      const right = this.#checkBalance(node.right)
+      if (right === -1) return -1 // propagate unbalanced signal up
+
+      if (Math.abs(left - right) > 1) return -1 // this node is unbalanced
+
+      return 1 + Math.max(left, right) // balanced so far, return true height
    }
 
    /**
@@ -275,7 +297,7 @@ class Tree {
       }
 
       if (node.data === value) {
-        return this.#countHeight(node)
+         return this.#countHeight(node)
       }
 
       return node.data < value
@@ -290,7 +312,7 @@ class Tree {
     * @param {number} [depth=0] - The depth of the node
     * @returns {number} The depth of the node
     */
-   depth(value, node , depth = 0) {
+   depth(value, node = this.#root, depth = 0) {
       if (node === null) {
          return
       }
@@ -304,9 +326,31 @@ class Tree {
          : this.depth(value, node.left, ++depth)
    }
 
-   isBalance() {}
+   /**
+    * Checks if the subtree rooted at node is balanced.
+    * Uses -1 as a sentinel value to signal an unbalanced subtree,
+    * allowing a single bottom-up pass instead of recomputing heights.
+    * @param {Node|null} [node=this.#root] - The current node
+    * @returns {boolean} True if the whole tree is balanced
+    */
+   isBalanced(node = this.#root) {
+      return this.#checkBalance(node) !== -1
+   }
 
-   rebalance() {}
+   /**
+    * Rebalances the tree by collecting all values via inOrder traversal
+    * (which gives sorted order for free), then rebuilding from scratch.
+    * Only rebalances if the tree is currently unbalanced.
+    */
+   rebalance() {
+      if (!this.isBalanced()) {
+         const values = []
+         this.inOrderForEach(val => values.push(val)) 
+         this.#root = this.#buildTree(values)
+      }
+
+      return
+   }
 
    /**
     * Prints the BST in a visual tree format.
