@@ -11,9 +11,8 @@ A collection of fundamental algorithms implemented in JavaScript, designed for l
 - [Overview](#overview)
 - [Algorithms](#algorithms)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Testing](#testing)
-- [Contributing](#contributing)
+- [Usage](#usage)
 
 ## Overview
 
@@ -23,57 +22,23 @@ This repository contains implementations of classic computer science algorithms.
 
 | Algorithm | Description | Time Complexity | Space Complexity |
 |-----------|-------------|-----------------|------------------|
-| [Binary Search Tree](binary-search/) | A self-balancing BST with insert, delete, and search operations | O(log n) avg | O(log n) |
-| [Fibonacci](fibonacci/) | Generate Fibonacci sequences using iterative and recursive approaches | O(n) / O(2^n) | O(n) / O(n) |
-| [Merge Sort](merge/) | Efficient, stable sorting algorithm using divide-and-conquer | O(n log n) | O(n) |
+| [Merge Sort](merge/) | Divide-and-conquer sorting algorithm | O(n log n) | O(n) |
+| [Fibonacci](fibonacci/) | Sequence generation (iterative & recursive) | O(n) / O(2^n) | O(n) |
+| [Binary Search Tree](../Data-Structures/binary-search/) | Tree data structure with ordered storage | O(log n) avg | O(log n) |
 
 ### Quick Links
 
-- **[Binary Search Tree](binary-search/)** - Tree data structure with ordered element storage
-- **[Fibonacci](fibonacci/)** - Mathematical sequence generation
-- **[Merge Sort](merge/)** - Efficient sorting algorithm
+- **[Merge Sort](merge/)** - Efficient, stable sorting with divide-and-conquer strategy
+- **[Fibonacci](fibonacci/)** - Mathematical sequence with iterative and recursive implementations
+- **[Binary Search Tree](../Data-Structures/binary-search/)** - BST lives in Data-Structures module
 
 ## Installation
 
 Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/yourusername/Algorithms.git
 cd Algorithms
 npm install
-```
-
-## Usage
-
-### Binary Search Tree
-
-```javascript
-const Tree = require('./binary-search/tree')
-
-const bst = new Tree()
-bst.root = [5, 3, 7, 1, 4, 6, 8]
-bst.insert(9)
-bst.includes(7) // true
-bst.deleteItem(7)
-bst.prettyPrint()
-```
-
-### Fibonacci
-
-```javascript
-const { loopF, recurF } = require('./fibonacci/main')
-
-loopF(10)   // Iterative: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
-recurF(10)  // Recursive: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
-```
-
-### Merge Sort
-
-```javascript
-const merge = require('./merge/main')
-
-merge([38, 27, 43, 3, 9, 82, 10])
-// Returns: [3, 9, 10, 27, 38, 43, 82]
 ```
 
 ## Testing
@@ -87,21 +52,45 @@ npm test
 Run tests for a specific algorithm:
 
 ```bash
-npm test -- binary-search
-npm test -- fibonacci
 npm test -- merge
+npm test -- fibonacci
 ```
 
-## Contributing
+## Usage
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+### Merge Sort
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+```javascript
+const merge = require('./merge/main')
+
+const unsorted = [38, 27, 43, 3, 9, 82, 10]
+const sorted = merge(unsorted)
+console.log(sorted)  // [3, 9, 10, 27, 38, 43, 82]
+```
+
+### Fibonacci
+
+```javascript
+const { loopF, recurF } = require('./fibonacci/main')
+
+loopF(10)   // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+recurF(10)  // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+```
+
+### Binary Search Tree
+
+```javascript
+const Tree = require('../Data-Structures/binary-search/tree')
+
+const bst = new Tree()
+bst.root = [8, 3, 10, 1, 6, 14, 4, 7, 13]
+
+bst.includes(6)     // true
+bst.insert(5)
+bst.deleteItem(3)
+bst.prettyPrint()   // Visual tree output
+```
 
 ---
 
-Built with :heart: for learning and education
+Built with ❤️ for learning and education
