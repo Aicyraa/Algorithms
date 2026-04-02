@@ -72,6 +72,22 @@ class Tree {
    }
 
    /**
+    * Counts the height from node to leaf node
+    * @param {Node} node - The target node 
+    * @returns {number} The height of the node
+    *  */ 
+   #countHeight(node) {
+      if (node === null ) {
+         return -1
+      }
+
+      const left = this.#countHeight(node.left)
+      const right = this.#countHeight(node.right)
+
+      return 1 + Math.max(left, right)
+   }
+
+   /**
     * Checks if a value exists in the tree.
     * @param {*} value - The value to search for.
     * @param {Node|null} [node=this.#root] - The current node in recursion.
@@ -251,36 +267,30 @@ class Tree {
     * Returns the height from the node to the longest leaf path
     * @param {any} value - The value that the function need to identify the height
     * @param {Node|null} [node=this.#root] - The current node
-    * @param {number} [height=0] - The height of the node
+    * @returns {number} The height of the target node
     */
-   height(value, node = this.#root, height = 0) {
+   height(value, node = this.#root) {
       if (node === null) {
          return
       }
 
       if (node.data === value) {
-         let left = 0
-         let right = 0
-
-         if (node.left) {
-            // Change the value to the left node value so we can still enter this code block
-            left = this.height(node.left.data, node.left, ++height)
-         }
-
-         if (node.right) {
-            // Change the value to the right node value so we can still enter this code block
-            right = this.height(node.right.data, node.right, ++height)
-         }
-
-         return Math.max(left, right) || height
+        return this.#countHeight(node)
       }
 
-      node.data < value 
+      return node.data < value
          ? this.height(value, node.right)
          : this.height(value, node.left)
    }
 
-   depth(value, node = this.#root, depth = 0) {
+   /**
+    * Returns the depth from the root to node
+    * @param {any} value - The target node
+    * @param {Node|null} [node=this.#root] - The current node
+    * @param {number} [depth=0] - The depth of the node
+    * @returns {number} The depth of the node
+    */
+   depth(value, node , depth = 0) {
       if (node === null) {
          return
       }
